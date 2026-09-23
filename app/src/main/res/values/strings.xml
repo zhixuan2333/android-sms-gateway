@@ -184,6 +184,17 @@
     <string name="incoming_type_data_sms" translatable="false">Data SMS</string>
     <string name="incoming_type_mms" translatable="false">MMS</string>
     <string name="language">Language</string>
+    <string name="line_messaging_api">LINE Messaging API</string>
+    <string name="line_settings_summary">Send received SMS directly to one LINE user</string>
+    <string name="line_enabled_summary">Push each incoming text SMS to the selected user</string>
+    <string name="line_channel_access_token">Channel access token</string>
+    <string name="line_channel_access_token_summary">LINE Messaging API channel access token</string>
+    <string name="line_recipient_user_id">Recipient user ID</string>
+    <string name="line_recipient_user_id_summary">LINE user ID to receive SMS notifications</string>
+    <string name="line_send_test">Send test message</string>
+    <string name="line_send_test_summary">Verify the current LINE API settings</string>
+    <string name="line_test_sent">LINE test message sent</string>
+    <string name="line_test_failed">LINE test failed: %1$s</string>
     <string name="language_system">System default</string>
     <string name="password_must_not_be_empty">Password must not be empty</string>
     <string name="working_hours">Working Hours</string>

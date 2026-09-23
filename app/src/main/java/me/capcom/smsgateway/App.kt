@@ -12,6 +12,7 @@ import me.capcom.smsgateway.modules.gateway.GatewayService
 import me.capcom.smsgateway.modules.incoming.incomingModule
 import me.capcom.smsgateway.modules.localserver.localserverModule
 import me.capcom.smsgateway.modules.logs.logsModule
+import me.capcom.smsgateway.modules.line.lineModule
 import me.capcom.smsgateway.modules.messages.messagesModule
 import me.capcom.smsgateway.modules.mms.mmsModule
 import me.capcom.smsgateway.modules.notifications.notificationsModule
@@ -44,6 +45,7 @@ class App: Application() {
                 settingsModule,
                 dbModule,
                 logsModule,
+                lineModule,
                 notificationsModule,
                 mmsModule,
                 messagesModule,

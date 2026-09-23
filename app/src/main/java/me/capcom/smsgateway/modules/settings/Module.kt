@@ -7,6 +7,7 @@ import me.capcom.smsgateway.modules.gateway.GatewaySettings
 import me.capcom.smsgateway.modules.incoming.IncomingMessagesSettings
 import me.capcom.smsgateway.modules.localserver.LocalServerSettings
 import me.capcom.smsgateway.modules.logs.LogsSettings
+import me.capcom.smsgateway.modules.line.LineSettings
 import me.capcom.smsgateway.modules.messages.MessagesSettings
 import me.capcom.smsgateway.modules.ping.PingSettings
 import me.capcom.smsgateway.modules.receiver.ReceiverSettings
@@ -70,6 +71,11 @@ val settingsModule = module {
     factory {
         ReceiverSettings(
             PreferencesStorage(get(), "receiver")
+        )
+    }
+    factory {
+        LineSettings(
+            PreferencesStorage(get(), "line")
         )
     }
     single {

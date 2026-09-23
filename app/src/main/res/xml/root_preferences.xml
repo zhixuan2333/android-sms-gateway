@@ -29,6 +29,12 @@
         app:summary="@string/retries_signing_etc"
         app:title="@string/webhooks_dotdotdot" />
 
+    <Preference
+        android:icon="@drawable/ic_messages"
+        app:fragment="me.capcom.smsgateway.ui.settings.LineSettingsFragment"
+        app:summary="@string/line_settings_summary"
+        app:title="@string/line_messaging_api" />
+
     <PreferenceCategory app:title="@string/encryption">
         <EditTextPreference
             app:icon="@drawable/ic_encryption"

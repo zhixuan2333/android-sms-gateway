@@ -2,7 +2,13 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'com.google.devtools.ksp'
-    id 'com.google.gms.google-services'
+}
+
+// The Firebase configuration is private and is intentionally not tracked. Keep
+// Firebase enabled for configured builds, while allowing a fresh checkout to
+// build a local/debug APK without google-services.json.
+if (file("google-services.json").exists()) {
+    apply plugin: 'com.google.gms.google-services'
 }
 
 ksp {

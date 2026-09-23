@@ -5,6 +5,8 @@ import android.os.Build
 import android.provider.Telephony
 import android.util.Base64
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import me.capcom.smsgateway.domain.WebhookDelivery
 import me.capcom.smsgateway.helpers.SubscriptionsHelper
@@ -12,6 +14,7 @@ import me.capcom.smsgateway.modules.incoming.IncomingMessagesService
 import me.capcom.smsgateway.modules.incoming.db.IncomingMessageType
 import me.capcom.smsgateway.modules.logs.LogsService
 import me.capcom.smsgateway.modules.logs.db.LogEntry
+import me.capcom.smsgateway.modules.line.LineMessagingService
 import me.capcom.smsgateway.modules.receiver.data.InboxMessage
 import me.capcom.smsgateway.modules.webhooks.WebHooksService
 import me.capcom.smsgateway.modules.webhooks.domain.WebHookEvent
@@ -31,6 +34,11 @@ class ReceiverService : KoinComponent {
     private val logsService: LogsService by inject()
     private val incomingMessagesService: IncomingMessagesService by inject()
     private val receiverSettings: ReceiverSettings by inject()
+    private val lineMessagingService: LineMessagingService by inject()
+    private val ioScope = CoroutineScope(Dispatchers.IO)
+    // SMS broadcasts and the inbox content observer may report the same SMS at
+    // nearly the same time. Keep the duplicate check and save operation atomic.
+    private val incomingMessageLock = Any()
 
     private val eventsReceiver by lazy { EventsReceiver() }
     private val mmsContentObserver by lazy { MmsContentObserver() }
@@ -109,10 +117,18 @@ class ReceiverService : KoinComponent {
             )
         )
 
-        val payload = saveAndBuildPayload(context, message)
+        val payload = synchronized(incomingMessageLock) {
+            saveAndBuildPayload(context, message)
+        }
 
         if (payload != null && triggerWebhooks) {
             webHooksService.emit(context, payload.first, payload.second)
+        }
+
+        if (payload != null && message is InboxMessage.Text) {
+            ioScope.launch {
+                lineMessagingService.notifyIncomingSms(message.address, message.text)
+            }
         }
 
         if (payload != null) {
